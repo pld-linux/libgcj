@@ -2,16 +2,25 @@ Summary:	Java runtime library for gcc
 Summary(pl):	¦rodowisko uruchomieniowe Javy dla gcc
 Name:		libgcj
 Version:	2.95.1
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL
 Group:		Libraries
-Group(de):	Libraries
+Group(cs):	Knihovny
+Group(da):	Biblioteker
+Group(de):	Bibliotheken
 Group(es):	Bibliotecas
 Group(fr):	Librairies
+Group(is):	Ağgerğasöfn
+Group(it):	Librerie
+Group(ja):	¥é¥¤¥Ö¥é¥ê
+Group(no):	Biblioteker
 Group(pl):	Biblioteki
+Group(pt):	Bibliotecas
 Group(pt_BR):	Bibliotecas
 Group(ru):	âÉÂÌÉÏÔÅËÉ
+Group(sl):	Knji¾nice
+Group(sv):	Bibliotek
 Group(uk):	â¦ÂÌ¦ÏÔÅËÉ
 URL:		http://sourceware.cygnus.com/java/
 Source0:	ftp://sourceware.cygnus.com/pub/java/%{name}-%{version}.tar.gz
@@ -33,12 +42,21 @@ w Javie przy u¿yciu gcj.
 Summary:	Static java runtime library for gcc
 Summary(pl):	Statyczna biblioteka uruchomieniowa Javy dla gcc
 Group:		Development/Libraries
-Group(de):	Entwicklung/Libraries
+Group(cs):	Vıvojové prostøedky/Knihovny
+Group(da):	Udvikling/Biblioteker
+Group(de):	Entwicklung/Bibliotheken
 Group(es):	Desarrollo/Bibliotecas
 Group(fr):	Development/Librairies
+Group(is):	Şróunartól/Ağgerğasöfn
+Group(it):	Sviluppo/Librerie
+Group(ja):	³«È¯/¥é¥¤¥Ö¥é¥ê
+Group(no):	Utvikling/Bibliotek
 Group(pl):	Programowanie/Biblioteki
 Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(pt):	Desenvolvimento/Bibliotecas
 Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(sl):	Razvoj/Knji¾nice
+Group(sv):	Utveckling/Bibliotek
 Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 Provides:	gcc-%{name}-static
