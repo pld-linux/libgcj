@@ -1,7 +1,8 @@
 Summary:	Java runtime library for gcc
+Summary(pl):	¶rodowisko uruchomieniowe Javy dla gcc
 Name:		libgcj
 Version:	2.95.1
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL
 Group:		Libraries
@@ -9,6 +10,9 @@ Group(de):	Libraries
 Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
+Group(pt_BR):	Bibliotecas
+Group(ru):	‚…¬Ã…œ‘≈À…
+Group(uk):	‚¶¬Ã¶œ‘≈À…
 URL:		http://sourceware.cygnus.com/java/
 Source0:	ftp://sourceware.cygnus.com/pub/java/%{name}-%{version}.tar.gz
 Requires:	binutils >= 2.9.1.0.25
@@ -21,20 +25,33 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 The Java runtime library. You will need this package to compile your
 Java programs using the gcc Java compiler (gcj).
 
+%description -l pl
+Biblioteka uruchomieniowa Javy. Jest potrzebna do kompilacji programÛw
+w Javie przy uøyciu gcj.
+
 %package static
 Summary:	Static java runtime library for gcc
+Summary(pl):	Statyczna biblioteka uruchomieniowa Javy dla gcc
 Group:		Development/Libraries
 Group(de):	Entwicklung/Libraries
+Group(es):	Desarrollo/Bibliotecas
 Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
-URL:		http://sourceware.cygnus.com/java/
+Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(ru):	Ú¡⁄“¡¬œ‘À¡/‚…¬Ã…œ‘≈À…
+Group(uk):	Úœ⁄“œ¬À¡/‚¶¬Ã¶œ‘≈À…
 Requires:	%{name} = %{version}
 Provides:	gcc-%{name}-static
 Obsoletes:	gcc-%{name}-static
 
 %description static
-The static java runtime library. You will need this package to
-staticly compile your Java programs using the gcc Java compiler (gcj).
+The static Java runtime library. You will need this package to
+statically compile your Java programs using the gcc Java compiler
+(gcj).
+
+%description static -l pl
+Statyczna biblioteka uruchomieniowa Javy. Jest potrzebna do
+statycznego kompilowania programÛw w Javie przy uøyciu gcj.
 
 %prep
 %setup -q
@@ -75,11 +92,11 @@ PATH=$PATH:/sbin:%{_sbindir}
 
 gzip -9nf ../ChangeLog
 
-%post   -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
-
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post   -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -96,5 +113,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files static
 %defattr(644,root,root,755)
-
 %{_libdir}/lib*gcj*.a
