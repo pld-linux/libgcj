@@ -1,0 +1,11 @@
+--- boehm-gc/os_dep.c
++++ boehm-gc/os_dep.c	2000/07/03 08:54:26
+@@ -14,7 +14,7 @@
+ 
+ # include "gc_priv.h"
+ 
+-# if defined(LINUX) && !defined(POWERPC)
++# if defined(LINUX) && !defined(POWERPC) && !defined(__sparc__)
+ #   include <linux/version.h>
+ #   if (LINUX_VERSION_CODE <= 0x10400)
+       /* Ugly hack to get struct sigcontext_struct definition.  Required      */

@@ -1,0 +1,13 @@
+Include string.h for strlen.
+
+--- libjava/include/cni.h	Wed Apr  7 16:52:34 1999
++++ libjava/include/cni.h	Tue Mar 13 14:18:11 2001
+@@ -19,6 +19,8 @@
+ #include <java-threads.h>
+ #include <java-array.h>
+ 
++#include <string.h>
++
+ extern inline jobject
+ JvAllocObject (jclass cls)
+ {

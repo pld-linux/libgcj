@@ -1,0 +1,187 @@
+diff -uNr libgcj-orig/boehm-gc/gc_mark.h libgcj-2.95.1/boehm-gc/gc_mark.h
+--- libgcj-orig/boehm-gc/gc_mark.h	Wed Apr  7 16:56:06 1999
++++ libgcj-2.95.1/boehm-gc/gc_mark.h	Tue Mar 13 21:23:04 2001
+@@ -93,9 +93,13 @@
+ 
+ extern mse * GC_mark_stack;
+ 
+-word GC_find_start();
++#ifdef PRINT_BLACK_LIST
++ptr_t GC_find_start(ptr_t, hdr*, word);
++#else
++ptr_t GC_find_start(ptr_t, hdr*);
++#endif
+ 
+-mse * GC_signal_mark_stack_overflow();
++mse * GC_signal_mark_stack_overflow(mse *);
+ 
+ # ifdef GATHERSTATS
+ #   define ADD_TO_ATOMIC(sz) GC_atomic_in_use += (sz)
+@@ -126,10 +130,10 @@
+ 
+ #ifdef PRINT_BLACK_LIST
+ #   define GC_FIND_START(current, hhdr, source) \
+-	GC_find_start(current, hhdr, source)
++	GC_find_start((ptr_t) current, hhdr, source)
+ #else
+ #   define GC_FIND_START(current, hhdr, source) \
+-	GC_find_start(current, hhdr)
++	GC_find_start((ptr_t) current, hhdr)
+ #endif
+ 
+ /* Push the contents of current onto the mark stack if it is a valid	*/
+@@ -145,7 +149,7 @@
+     \
+     GET_HDR(current,hhdr); \
+     if (IS_FORWARDING_ADDR_OR_NIL(hhdr)) { \
+-         current = GC_FIND_START(current, hhdr, (word)source); \
++         current = (word) GC_FIND_START(current, hhdr, (word)source); \
+          if (current == 0) goto exit_label; \
+          hhdr = HDR(current); \
+     } \
+diff -uNr libgcj-orig/boehm-gc/gc_priv.h libgcj-2.95.1/boehm-gc/gc_priv.h
+--- libgcj-orig/boehm-gc/gc_priv.h	Wed Aug 18 00:42:27 1999
++++ libgcj-2.95.1/boehm-gc/gc_priv.h	Thu Mar 15 10:10:40 2001
+@@ -50,6 +50,15 @@
+ # endif
+ 
+ typedef int GC_bool;
++
++# ifdef TRUE
++#  undef TRUE
++# endif
++
++# ifdef FALSE
++#  undef FALSE
++# endif
++
+ # define TRUE 1
+ # define FALSE 0
+ 
+@@ -1236,7 +1245,8 @@
+     GC_bool GC_in_last_heap_sect(/* ptr_t */);
+ 	/* In last added heap section?  If so, avoid breaking up.	*/
+ #endif
+-void GC_apply_to_all_blocks(/*fn, client_data*/);
++void GC_apply_to_all_blocks(void (*fn)(struct hblk *, word),
++			    word client_data);
+ 			/* Invoke fn(hbp, client_data) for each 	*/
+ 			/* allocated heap block.			*/
+ struct hblk * GC_next_block(/* struct hblk * h */);
+@@ -1328,23 +1338,23 @@
+ /* Black listing: */
+ void GC_bl_init(); 	
+ # ifndef ALL_INTERIOR_POINTERS
+-    void GC_add_to_black_list_normal(/* bits, maybe source */);
++    void GC_add_to_black_list_normal(word /* bits, maybe source */);
+ 			/* Register bits as a possible future false	*/
+ 			/* reference from the heap or static data	*/
+ #   ifdef PRINT_BLACK_LIST
+ #     define GC_ADD_TO_BLACK_LIST_NORMAL(bits, source) \
+-			GC_add_to_black_list_normal(bits, source)
++			GC_add_to_black_list_normal((word) bits, source)
+ #   else
+ #     define GC_ADD_TO_BLACK_LIST_NORMAL(bits, source) \
+-			GC_add_to_black_list_normal(bits)
++			GC_add_to_black_list_normal((word) bits)
+ #   endif
+ # else
+ #   ifdef PRINT_BLACK_LIST
+ #     define GC_ADD_TO_BLACK_LIST_NORMAL(bits, source) \
+-			GC_add_to_black_list_stack(bits, source)
++			GC_add_to_black_list_stack((word) bits, source)
+ #   else
+ #     define GC_ADD_TO_BLACK_LIST_NORMAL(bits, source) \
+-			GC_add_to_black_list_stack(bits)
++			GC_add_to_black_list_stack((word) bits)
+ #   endif
+ # endif
+ 
+@@ -1444,7 +1454,7 @@
+ 				/* collection work, if appropriate.	*/
+ 				/* A unit is an amount appropriate for  */
+ 				/* HBLKSIZE bytes of allocation.	*/
+-ptr_t GC_generic_malloc(/* bytes, kind */);
++ptr_t GC_generic_malloc(word bytes, int kind);
+ 				/* Allocate an object of the given	*/
+ 				/* kind.  By default, there are only	*/
+ 				/* a few kinds: composite(pointerfree), */
+@@ -1458,7 +1468,7 @@
+ 				/* As above, but pointers past the 	*/
+ 				/* first page of the resulting object	*/
+ 				/* are ignored.				*/
+-ptr_t GC_generic_malloc_inner(/* bytes, kind */);
++ptr_t GC_generic_malloc_inner (word bytes, int kind);
+ 				/* Ditto, but I already hold lock, etc.	*/
+ ptr_t GC_generic_malloc_words_small GC_PROTO((size_t words, int kind));
+ 				/* As above, but size in units of words */
+@@ -1487,7 +1497,7 @@
+ 				/* Remove the header for block h.	*/
+ void GC_remove_counts(/*h, sz*/);
+ 				/* Remove forwarding counts for h.	*/
+-hdr * GC_find_header(/*p*/);	/* Debugging only.			*/
++hdr * GC_find_header(ptr_t /*p*/);	/* Debugging only.			*/
+ 
+ void GC_finalize();	/* Perform all indicated finalization actions	*/
+ 			/* on unmarked objects.				*/
+diff -uNr libgcj-orig/boehm-gc/mark.c libgcj-2.95.1/boehm-gc/mark.c
+--- libgcj-orig/boehm-gc/mark.c	Wed Apr  7 10:01:39 1999
++++ libgcj-2.95.1/boehm-gc/mark.c	Tue Mar 13 20:36:40 2001
+@@ -340,20 +340,20 @@
+ /* with IGNORE_OFF_PAGE set.						*/
+ /*ARGSUSED*/
+ # ifdef PRINT_BLACK_LIST
+-  word GC_find_start(current, hhdr, source)
++  ptr_t GC_find_start(current, hhdr, source)
+   word source;
+ # else
+-  word GC_find_start(current, hhdr)
++  ptr_t GC_find_start(current, hhdr)
+ # define source 0
+ # endif
+-register word current;
++register ptr_t current;
+ register hdr * hhdr;
+ {
+ #   ifdef ALL_INTERIOR_POINTERS
+ 	if (hhdr != 0) {
+ 	    register word orig = current;
+ 	    
+-	    current = (word)HBLKPTR(current) + HDR_BYTES;
++	    current = (ptr_t)HBLKPTR(current) + HDR_BYTES;
+ 	    do {
+ 	      current = current - HBLKSIZE*(word)hhdr;
+ 	      hhdr = HDR(current);
+diff -uNr libgcj-orig/boehm-gc/typd_mlc.c libgcj-2.95.1/boehm-gc/typd_mlc.c
+--- libgcj-orig/boehm-gc/typd_mlc.c	Wed Apr  7 16:56:06 1999
++++ libgcj-2.95.1/boehm-gc/typd_mlc.c	Tue Mar 13 20:37:14 2001
+@@ -430,7 +430,7 @@
+     	if (bm & 1) {
+     	    current = *current_p;
+     	    if ((ptr_t)current >= least_ha && (ptr_t)current <= greatest_ha) {
+-    	        PUSH_CONTENTS(current, mark_stack_ptr,
++    	        PUSH_CONTENTS((ptr_t)current, mark_stack_ptr,
+ 			      mark_stack_limit, current_p, exit1);
+     	    }
+     	}
+diff -uNr libgcj-orig/libjava/boehm.cc libgcj-2.95.1/libjava/boehm.cc
+--- libgcj-orig/libjava/boehm.cc	Wed Apr  7 16:52:32 1999
++++ libgcj-2.95.1/libjava/boehm.cc	Thu Mar 15 12:53:02 2001
+@@ -260,7 +260,7 @@
+ void
+ _Jv_RegisterFinalizer (void *object, _Jv_FinalizerFunc *meth)
+ {
+-  GC_REGISTER_FINALIZER_NO_ORDER (object, call_finalizer, meth,
++  GC_REGISTER_FINALIZER_NO_ORDER (object, call_finalizer, (GC_PTR)(meth),
+ 				  NULL, NULL);
+ }
+ 
+@@ -308,7 +308,7 @@
+ _Jv_GCFreeMemory (void)
+ {
+   long sum = 0;
+-  GC_apply_to_all_blocks (sum_blocks, &sum);
++  GC_apply_to_all_blocks (sum_blocks, reinterpret_cast<word>(&sum));
+   return sum;
+ }
+ 

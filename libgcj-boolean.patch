@@ -1,0 +1,13 @@
+Help the compiler to disambiguate.
+
+--- libjava/java/net/natPlainSocketImpl.cc	Sat Aug 21 14:09:44 1999
++++ libjava/java/net/natPlainSocketImpl.cc	Tue Mar 13 18:33:36 2001
+@@ -363,7 +363,7 @@
+         if (l_val.l_onoff)
+           return new java::lang::Integer (l_val.l_linger);
+         else
+-	  return new java::lang::Boolean (false);
++	  return new java::lang::Boolean ((__java_boolean)false);
+ #else
+         JvThrow (new java::lang::InternalError (
+           JvNewStringUTF ("SO_LINGER not supported")));      

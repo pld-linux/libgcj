@@ -1,0 +1,24 @@
+Include stdlib.h for abort.
+Properly cast _Jv_type_matcher.
+
+--- libjava/exception.cc	Wed Apr  7 16:52:32 1999
++++ libjava/exception.cc	Tue Mar 13 14:43:23 2001
+@@ -18,6 +18,8 @@
+ #include <cni.h>
+ #include <jvm.h>
+ 
++#include <stdlib.h>
++
+ // eh-common.h needs gansidecl.h.
+ #include "gansidecl.h"
+ #include "eh-common.h"
+@@ -147,7 +149,7 @@
+       _Jv_eh_alloc ();
+       ehinfo = *(__get_eh_info ());
+     }
+-  ehinfo->eh_info.match_function = _Jv_type_matcher;
++  ehinfo->eh_info.match_function = reinterpret_cast<__eh_matcher>(_Jv_type_matcher);
+   ehinfo->eh_info.language = EH_LANG_Java;
+   ehinfo->eh_info.version = 1;
+   ehinfo->value = value;
+

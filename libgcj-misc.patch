@@ -1,0 +1,27 @@
+diff -uNr libgcj-orig/libjava/java/lang/fdlibm.h libgcj-2.95.1/libjava/java/lang/fdlibm.h
+--- libgcj-orig/libjava/java/lang/fdlibm.h	Thu Jun 24 22:45:42 1999
++++ libgcj-2.95.1/libjava/java/lang/fdlibm.h	Wed Mar 14 01:35:54 2001
+@@ -27,6 +27,10 @@
+ /* CYGNUS LOCAL: Default to XOPEN_MODE.  */
+ #define _XOPEN_MODE
+ 
++#ifdef __P
++# undef __P
++#endif
++
+ #ifdef __STDC__
+ #define	__P(p)	p
+ #else
+diff -uNr libgcj-orig/libjava/java/lang/mprec.h libgcj-2.95.1/libjava/java/lang/mprec.h
+--- libgcj-orig/libjava/java/lang/mprec.h	Mon Jul 12 11:32:05 1999
++++ libgcj-2.95.1/libjava/java/lang/mprec.h	Thu Mar 15 13:13:23 2001
+@@ -51,6 +51,9 @@
+ #include <sys/config.h>
+ #endif
+ 
++#if defined HAVE_STDC_HEADERS
++#include <string.h>
++#endif
+ 
+ /* ISO C9X int type declarations */
+ 

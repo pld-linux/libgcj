@@ -1,0 +1,16 @@
+Properly cast obj.
+
+--- libjava/include/jvm.h	Wed Apr  7 16:52:35 1999
++++ libjava/include/jvm.h	Tue Mar 13 14:21:41 2001
+@@ -79,7 +79,10 @@
+ inline jint
+ _Jv_HashCode (jobject obj)
+ {
+-  return (jint) obj;
++  // This was chosen to yield relatively well distributed results on
++  // both 32- and 64-bit architectures.  Note 0x7fffffff is prime.
++  // FIXME: we assume sizeof(long) == sizeof(void *).
++  return (jint) (reinterpret_cast<unsigned long>(obj) % 0x7fffffff);
+ }
+ 
+ extern "C" void _Jv_ThrowBadArrayIndex (jint bad_index);
