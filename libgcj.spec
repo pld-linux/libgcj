@@ -92,6 +92,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/lib*gcj*.so.*.*.*
 %{_libdir}/lib*gcj*.la
 
+%{_datadir}/libgcj.zip
+
 %files static
 %defattr(644,root,root,755)
 
