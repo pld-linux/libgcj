@@ -7,6 +7,14 @@ Epoch:		1
 License:	GPL
 Group:		Libraries
 Source0:	ftp://sourceware.cygnus.com/pub/java/%{name}-%{version}.tar.gz
+Patch0:		%{name}-sigcontext.patch
+Patch1:		%{name}-cni_h.patch
+Patch2:		%{name}-exception_cc.patch
+Patch3:		%{name}-jvm_h.patch
+Patch4:		%{name}-boolean.patch
+Patch5:		%{name}-boehm_gc.patch
+Patch6:		%{name}-misc.patch
+
 URL:		http://sourceware.cygnus.com/java/
 BuildRequires:	gcc-java
 Requires:	binutils >= 2.9.1.0.25
@@ -42,6 +50,13 @@ statycznego kompilowania programów w Javie przy u¿yciu gcj.
 
 %prep
 %setup -q
+%patch0
+%patch1 -p0
+%patch2 -p0
+%patch3 -p0
+%patch4 -p0
+%patch5 -p1
+%patch6 -p1
 
 %build
 rm -rf obj-%{_target_platform}
@@ -52,7 +67,7 @@ CFLAGS="%{rpmcflags}" CXXFLAGS="%{rpmcflags}" LDFLAGS="%{rpmldflags}" \
 	--prefix=%{_prefix} \
 	--infodir=%{_infodir} \
 	--enable-shared \
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 ppc
 	--enable-threads \
 	--enable-haifa \
 %endif
@@ -77,8 +92,6 @@ PATH=$PATH:/sbin:%{_sbindir}
 	mandir=$RPM_BUILD_ROOT%{_mandir} \
 	infodir=$RPM_BUILD_ROOT%{_infodir}
 
-gzip -9nf ../ChangeLog
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -87,7 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog.gz libjava/doc/*
+%doc ChangeLog libjava/doc/*
 %attr(755,root,root) %{_bindir}/jv-convert
 
 %{_libdir}/*.spec
