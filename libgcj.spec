@@ -45,7 +45,7 @@ statycznego kompilowania programów w Javie przy u¿yciu gcj.
 
 %build
 rm -rf obj-%{_target_platform}
-install -d obj-%{_target_platform} && cd obj-%{_target_platform} 
+install -d obj-%{_target_platform} && cd obj-%{_target_platform}
 
 CFLAGS="%{rpmcflags}" CXXFLAGS="%{rpmcflags}" LDFLAGS="%{rpmldflags}" \
 ../configure \
