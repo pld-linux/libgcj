@@ -36,7 +36,7 @@ w Javie przy u¿yciu gcj.
 Summary:	Static java runtime library for gcc
 Summary(pl):	Statyczna biblioteka uruchomieniowa Javy dla gcc
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Provides:	gcc-%{name}-static
 Obsoletes:	gcc-%{name}-static
 
