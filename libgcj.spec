@@ -70,12 +70,11 @@ PATH=$PATH:/sbin:%{_sbindir}
 	mandir=$RPM_BUILD_ROOT%{_mandir} \
 	infodir=$RPM_BUILD_ROOT%{_infodir}
 
-strip $RPM_BUILD_ROOT%{_bindir}/* || :
 strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/lib*.so*
 
 gzip -9nf ../ChangeLog
 
-%post -p /sbin/ldconfig
+%post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %clean
