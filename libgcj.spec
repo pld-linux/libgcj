@@ -5,8 +5,10 @@ Release:	1
 Epoch:		1
 License:	GPL
 Group:		Libraries
-Group(pl):	Biblioteki
+Group(de):	Libraries
+Group(es):	Bibliotecas
 Group(fr):	Librairies
+Group(pl):	Biblioteki
 URL:		http://sourceware.cygnus.com/java/
 Source0:	ftp://sourceware.cygnus.com/pub/java/%{name}-%{version}.tar.gz
 Requires:	binutils >= 2.9.1.0.25
@@ -22,8 +24,9 @@ Java programs using the gcc Java compiler (gcj).
 %package static
 Summary:	Static java runtime library for gcc
 Group:		Development/Libraries
-Group(pl):	Programowanie/Biblioteki
+Group(de):	Entwicklung/Libraries
 Group(fr):	Development/Librairies
+Group(pl):	Programowanie/Biblioteki
 URL:		http://sourceware.cygnus.com/java/
 Requires:	%{name} = %{version}
 Provides:	gcc-%{name}-static
@@ -40,7 +43,7 @@ staticly compile your Java programs using the gcc Java compiler (gcj).
 rm -rf obj-%{_target_platform}
 install -d obj-%{_target_platform} && cd obj-%{_target_platform} 
 
-CFLAGS="$RPM_OPT_FLAGS" CXXFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
+CFLAGS="%{rpmcflags}" CXXFLAGS="%{rpmcflags}" LDFLAGS="%{rpmldflags}" \
 ../configure \
 	--prefix=%{_prefix} \
 	--infodir=%{_infodir} \
@@ -54,7 +57,7 @@ CFLAGS="$RPM_OPT_FLAGS" CXXFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
 	--with-gxx-include-dir="\$\{prefix\}/include/g++" \
 	%{_target_platform}
 
-%{__make} LDFLAGS_FOR_TARGET="-s" \
+%{__make} LDFLAGS_FOR_TARGET="%{rpmldflags}" \
 	mandir=%{_mandir} \
 	infodir=%{_infodir}
 
@@ -69,8 +72,6 @@ PATH=$PATH:/sbin:%{_sbindir}
 	prefix=$RPM_BUILD_ROOT%{_prefix} \
 	mandir=$RPM_BUILD_ROOT%{_mandir} \
 	infodir=$RPM_BUILD_ROOT%{_infodir}
-
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/lib*.so*
 
 gzip -9nf ../ChangeLog
 
