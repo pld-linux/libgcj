@@ -22,13 +22,14 @@ Group(ru):	âÉÂÌÉÏÔÅËÉ
 Group(sl):	Knji¾nice
 Group(sv):	Bibliotek
 Group(uk):	â¦ÂÌ¦ÏÔÅËÉ
-URL:		http://sourceware.cygnus.com/java/
 Source0:	ftp://sourceware.cygnus.com/pub/java/%{name}-%{version}.tar.gz
+URL:		http://sourceware.cygnus.com/java/
+BuildRequires:	gcc-java
 Requires:	binutils >= 2.9.1.0.25
 Requires:	zip >= 2.1
 Provides:	gcc-%{name}
-Obsoletes:	gcc-%{name}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	gcc-%{name}
 
 %description
 The Java runtime library. You will need this package to compile your
