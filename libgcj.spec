@@ -18,7 +18,7 @@ Patch6:		%{name}-misc.patch
 
 URL:		http://sourceware.cygnus.com/java/
 BuildRequires:	gcc-java
-Requires:	binutils >= 2.9.1.0.25
+Requires:	binutils
 Requires:	zip >= 2.1
 Provides:	gcc-%{name}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
