@@ -7,6 +7,7 @@ Epoch:		1
 License:	GPL
 Group:		Libraries
 Source0:	ftp://sourceware.cygnus.com/pub/java/%{name}-%{version}.tar.gz
+# Source0-md5:	63f61b33ef099caf55ec55553a668576
 Patch0:		%{name}-sigcontext.patch
 Patch1:		%{name}-cni_h.patch
 Patch2:		%{name}-exception_cc.patch
