@@ -1,5 +1,5 @@
 Summary:	Java runtime library for gcc
-Summary(pl):	¶rodowisko uruchomieniowe Javy dla gcc
+Summary(pl.UTF-8):   ≈örodowisko uruchomieniowe Javy dla gcc
 Name:		libgcj
 Version:	2.95.1
 Release:	4
@@ -28,13 +28,13 @@ Obsoletes:	gcc-%{name}
 The Java runtime library. You will need this package to compile your
 Java programs using the gcc Java compiler (gcj).
 
-%description -l pl
-Biblioteka uruchomieniowa Javy. Jest potrzebna do kompilacji programÛw
-w Javie przy uøyciu gcj.
+%description -l pl.UTF-8
+Biblioteka uruchomieniowa Javy. Jest potrzebna do kompilacji program√≥w
+w Javie przy u≈ºyciu gcj.
 
 %package static
 Summary:	Static java runtime library for gcc
-Summary(pl):	Statyczna biblioteka uruchomieniowa Javy dla gcc
+Summary(pl.UTF-8):   Statyczna biblioteka uruchomieniowa Javy dla gcc
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}
 Provides:	gcc-%{name}-static
@@ -45,9 +45,9 @@ The static Java runtime library. You will need this package to
 statically compile your Java programs using the gcc Java compiler
 (gcj).
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna biblioteka uruchomieniowa Javy. Jest potrzebna do
-statycznego kompilowania programÛw w Javie przy uøyciu gcj.
+statycznego kompilowania program√≥w w Javie przy u≈ºyciu gcj.
 
 %prep
 %setup -q
