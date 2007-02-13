@@ -1,5 +1,5 @@
 Summary:	Java runtime library for gcc
-Summary(pl.UTF-8):   Środowisko uruchomieniowe Javy dla gcc
+Summary(pl.UTF-8):	Środowisko uruchomieniowe Javy dla gcc
 Name:		libgcj
 Version:	2.95.1
 Release:	4
@@ -34,7 +34,7 @@ w Javie przy użyciu gcj.
 
 %package static
 Summary:	Static java runtime library for gcc
-Summary(pl.UTF-8):   Statyczna biblioteka uruchomieniowa Javy dla gcc
+Summary(pl.UTF-8):	Statyczna biblioteka uruchomieniowa Javy dla gcc
 Group:		Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}
 Provides:	gcc-%{name}-static
