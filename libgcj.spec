@@ -2,7 +2,7 @@ Summary:	Java runtime library for gcc
 Summary(pl.UTF-8):	Środowisko uruchomieniowe Javy dla gcc
 Name:		libgcj
 Version:	2.95.1
-Release:	4
+Release:	5
 Epoch:		1
 License:	GPL
 Group:		Libraries
