@@ -51,13 +51,13 @@ statycznego kompilowania programów w Javie przy użyciu gcj.
 
 %prep
 %setup -q
-%patch0
-%patch1 -p0
-%patch2 -p0
-%patch3 -p0
-%patch4 -p0
-%patch5 -p1
-%patch6 -p1
+%patch -P0
+%patch -P1 -p0
+%patch -P2 -p0
+%patch -P3 -p0
+%patch -P4 -p0
+%patch -P5 -p1
+%patch -P6 -p1
 
 %build
 rm -rf obj-%{_target_platform}
